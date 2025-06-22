@@ -5,11 +5,14 @@ export const getDataFromToken = (request: NextRequest) => {
   try {
     const token = request.cookies.get("token")?.value || "";
 
-    const decodedToken:any = jwt.verify(token, process.env.TOKEN_SECRET!)
+    const decodedToken: { id: string } = jwt.verify(
+      token,
+      process.env.TOKEN_SECRET!
+    ) as { id: string };
 
     return decodedToken.id;
   } catch (error) {
     console.error("Error extracting data from token:", error);
     return null;
   }
-}
+};

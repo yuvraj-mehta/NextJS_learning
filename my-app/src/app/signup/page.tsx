@@ -3,7 +3,6 @@ import Link from "next/link";
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
-import { log } from "console";
 import axios from "axios";
 
 export default function SignupPage() {
@@ -17,7 +16,6 @@ export default function SignupPage() {
 
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
 
-
   const onSignup = async () => {
     try {
       setLoading(true);
@@ -27,24 +25,27 @@ export default function SignupPage() {
       toast.success("Signup successful!");
 
       router.push("/login");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.log("Error during signup:", error);
 
       // TODO: handle error properly
-      toast.error(error.message);
+      toast.error((error as Error).message);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (user.email.length > 0 && user.password.length > 0 && user.username.length > 0) {
+    if (
+      user.email.length > 0 &&
+      user.password.length > 0 &&
+      user.username.length > 0
+    ) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
     }
-  }, [user])
-
+  }, [user]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">

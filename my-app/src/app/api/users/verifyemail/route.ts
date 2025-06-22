@@ -9,11 +9,10 @@ export async function POST(request: NextRequest) {
     const reqBody = await request.json();
     const { token } = reqBody;
 
-    const user = await User.findOne({ 
-        verifyToken: token,
-        verifyTokenExpiry: { $gt: Date.now() }
-      }
-    );
+    const user = await User.findOne({
+      verifyToken: token,
+      verifyTokenExpiry: { $gt: Date.now() },
+    });
 
     if (!user) {
       return NextResponse.json(
@@ -31,7 +30,7 @@ export async function POST(request: NextRequest) {
       message: "Email verified successfully.",
       success: true,
     });
-  } catch (error: any) {
+  } catch {
     return NextResponse.json(
       { error: "An error occurred while processing your request." },
       { status: 500 }

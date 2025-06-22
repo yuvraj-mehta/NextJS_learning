@@ -17,13 +17,13 @@ export function middleware(request: NextRequest) {
   }
 }
  
+// ...existing code...
 export const config = {
   matcher: [
     '/',
     '/profile',
     '/signup',
-    '/login',
     '/verifyemail',
-    '/api/:path*'
+    '/login',
   ]
 }

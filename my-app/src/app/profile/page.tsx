@@ -4,8 +4,6 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { set } from "mongoose";
-import { get } from "http";
 
 export default function ProfilePage() {
   const [data, setData] = useState("nothing");
@@ -13,7 +11,7 @@ export default function ProfilePage() {
 
   const logout = async () => {
     try {
-      const token = await axios.get("/api/users/logout");
+      await axios.get("/api/users/logout");
       console.log("Logging out...");
       toast.success("Logged out successfully!");
       router.push("/login");
@@ -35,7 +33,7 @@ export default function ProfilePage() {
       <p>This is the profile page.</p>
       <p className="text-gray-500">
         {data === "nothing" ? (
-          <span className="text-gray-500">"Nothing"</span>
+          <span className="text-gray-500">&quot;Nothing&quot;</span>
         ) : (
           <Link href={`/profile/${data}`}>
             <span className="text-blue-500">View Profile: {data}</span>

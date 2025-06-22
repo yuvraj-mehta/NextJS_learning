@@ -1,9 +1,16 @@
 import nodemailer from "nodemailer";
 import User from "@/models/userModel";
 import bcryptjs from "bcryptjs";
-import { hash } from "crypto";
 
-export const sendEmail = async ({ email, emailType, userId }: any) => {
+export const sendEmail = async ({
+  email,
+  emailType,
+  userId,
+}: {
+  email: string;
+  emailType: string;
+  userId: string;
+}) => {
   try {
     const hashedToken = await bcryptjs.hash(userId.toString(), 10);
 
@@ -28,7 +35,7 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
     }
 
     // Looking to send emails in production? Check out our Email API/SMTP product!
-    var transport = nodemailer.createTransport({
+    const transport = nodemailer.createTransport({
       host: "sandbox.smtp.mailtrap.io",
       port: 2525,
       auth: {
@@ -52,17 +59,18 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
       <br />
       ${process.env.DOMAIN}/verifyemail?token=${hashedToken}
       </p>
-      <a href="${process.env.DOMAIN}/verifyemail?token=${hashedToken}">Click here</a>
+      <a href="${
+        process.env.DOMAIN
+      }/verifyemail?token=${hashedToken}">Click here</a>
       `,
     };
     console.log("Sending email with options:", mailOptions);
-    
 
     const mailResponse = await transport.sendMail(mailOptions);
     console.log("Email sent successfully:", mailResponse);
     return mailResponse;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error sending email:", error);
-    throw new Error("Failed to send email", error.message);
+    throw new Error("Failed to send email");
   }
 };

@@ -1,24 +1,23 @@
 "use client";
 import axios from "axios";
-import { set } from "mongoose";
 import Link from "next/link";
-import React, { use } from "react";
-import { useEffect, useState } from "react";
+import React from "react";
+import { useEffect, useState, useCallback } from "react";
 
 export default function VerifyEmail() {
   const [token, setToken] = useState("");
   const [verified, setVerified] = useState(false);
   const [error, setError] = useState(false);
 
-  const verfyUserEmail = async () => {
+  const verfyUserEmail = useCallback(async () => {
     try {
       await axios.post("/api/users/verifyemail", { token });
       setVerified(true);
-    } catch (error: any) {
+    } catch (error: unknown) {
       setError(true);
       console.error("Error verifying email:", error);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     const urlToken = window.location.search.split("=")[1];
@@ -29,11 +28,11 @@ export default function VerifyEmail() {
     if (token.length > 0) {
       verfyUserEmail();
     }
-  }, [token]);
+  }, [token, verfyUserEmail]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <h1 className="text-4xl font-bold">"Verify Email"</h1>
+      <h1 className="text-4xl font-bold">&quot;Verify Email&quot;</h1>
       <h2>{token ? `Token found: ${token}` : "No token found"}</h2>
 
       {verified && (
@@ -44,7 +43,7 @@ export default function VerifyEmail() {
           </Link>
         </div>
       )}
-      
+
       {error && (
         <div className="text-red-500 mt-4">
           Error verifying email. Please try again later.

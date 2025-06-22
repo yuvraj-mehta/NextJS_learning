@@ -4,7 +4,6 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { set } from "mongoose";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -34,11 +33,10 @@ export default function SignupPage() {
   useEffect(() => {
     if (user.email && user.password) {
       setButtonDisabled(false);
-    }
-    else {
+    } else {
       setButtonDisabled(true);
     }
-  }, [user])
+  }, [user]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
@@ -66,14 +64,14 @@ export default function SignupPage() {
       />
 
       <button
-        className="mt-4 p-2 bg-blue-600 text-white rounded-md w-80 cursor-pointer hover:bg-blue-700 transition-colors duration-200"
+        className="mt-4 p-2 bg-blue-600 text-white rounded-md w-80 cursor-pointer hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         onClick={onLogin}
-        
+        disabled={buttonDisabled || loading}
       >
-        Login here
+        {loading ? "Logging in..." : "Login here"}
       </button>
       <Link href="/signup" className="mt-4 text-blue-500">
-        Don't have an account? Sign up
+        Don&apos;t have an account? Sign up
       </Link>
     </div>
   );
