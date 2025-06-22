@@ -23,6 +23,7 @@ export const config = {
     '/profile',
     '/signup',
     '/login',
-    './verifyemail',
+    '/verifyemail',
+    '/api/:path*'
   ]
 }
